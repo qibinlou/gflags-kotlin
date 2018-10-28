@@ -9,16 +9,22 @@ object Defines {
         flagValues.registerFlag(flag)
     }
 
-    fun <T, P : ArgumentParser<T>> DEFINE(parser: P, name: String, default: T, flagValues: FlagValues = FLAGS) {
-        DEFINE_flag(Flag(name, default, parser), flagValues)
+    fun <T, P : ArgumentParser<T>> DEFINE(
+        parser: P,
+        name: String,
+        default: T,
+        help: String? = null,
+        flagValues: FlagValues = FLAGS
+    ) {
+        DEFINE_flag(Flag(name, default, parser, help = help), flagValues)
     }
 
-    fun DEFINE_string(name: String, default: String, help: String, flagValues: FlagValues = FLAGS) {
-        TODO()
+    fun DEFINE_string(name: String, default: String, help: String? = null, flagValues: FlagValues = FLAGS) {
+        DEFINE(Parsers.STRING_PARSER, name, default, help, flagValues)
     }
 
-    fun DEFINE_boolean(name: String, default: Boolean, help: String, flagValues: FlagValues = FLAGS) {
-        TODO()
+    fun DEFINE_boolean(name: String, default: Boolean, help: String? = null, flagValues: FlagValues = FLAGS) {
+        DEFINE(Parsers.BOOLEAN_PARSER, name, default, help, flagValues)
     }
 
     fun DEFINE_float(
