@@ -1,6 +1,6 @@
 package gflags
 
-class StringArgumentParser : ArgumentParser<String> {
+internal class StringArgumentParser : ArgumentParser<String> {
     override fun parse(argument: String): String {
         return argument
     }

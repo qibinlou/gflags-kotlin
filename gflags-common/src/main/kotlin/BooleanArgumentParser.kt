@@ -2,7 +2,7 @@ package gflags
 
 import gflags.exceptions.IllegalFlagValueException
 
-class BooleanArgumentParser : ArgumentParser<Boolean> {
+internal class BooleanArgumentParser : ArgumentParser<Boolean> {
 
     private companion object {
         val TRUE_LITERALS = setOf("true", "t", "1")

@@ -1,6 +1,6 @@
 package gflags
 
-enum class FlagType {
+internal enum class FlagType {
     STRING,
     BOOLEAN,
     INTEGER,

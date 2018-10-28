@@ -1,6 +1,6 @@
 package gflags
 
-object Parsers {
+internal object Parsers {
     val STRING_PARSER = StringArgumentParser()
     val BOOLEAN_PARSER = BooleanArgumentParser()
 }
