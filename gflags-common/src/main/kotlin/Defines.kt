@@ -1,9 +1,12 @@
 package gflags
 
-import gflags.FlagValues.FLAGS
+
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 object Defines {
 
+    @JvmStatic
     @Suppress("FunctionName")
     fun <T, P : ArgumentParser<T>> DEFINE_flag(flag: Flag<T, P>, flagValues: FlagValues = FLAGS) {
         flagValues.registerFlag(flag)
@@ -19,10 +22,14 @@ object Defines {
         DEFINE_flag(Flag(name, default, parser, help = help), flagValues)
     }
 
+    @JvmStatic
+    @JvmOverloads
     fun DEFINE_string(name: String, default: String, help: String? = null, flagValues: FlagValues = FLAGS) {
         DEFINE(Parsers.STRING_PARSER, name, default, help, flagValues)
     }
 
+    @JvmStatic
+    @JvmOverloads
     fun DEFINE_boolean(name: String, default: Boolean, help: String? = null, flagValues: FlagValues = FLAGS) {
         DEFINE(Parsers.BOOLEAN_PARSER, name, default, help, flagValues)
     }

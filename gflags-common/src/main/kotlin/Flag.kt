@@ -10,10 +10,11 @@ class Flag<T, P : ArgumentParser<T>>(
 ) {
 
     fun parse(argument: String): T {
-        return parser.parse(argument)
+        value = parser.parse(argument)
+        return value!!
     }
 
-    fun getFlagType(): FlagType {
+    internal fun getFlagType(): FlagType {
         return FlagType.STRING
     }
 

@@ -1,17 +1,14 @@
 package gflags
 
 import gflags.exceptions.ConflictFlagNameException
+import kotlin.jvm.JvmField
 
 typealias AnyFlag = Flag<*, *>
 
 /**
  * Singleton container of flags
  */
-object FlagValues {
-    /**
-     * Alias for FlagValues singleton object.
-     */
-    val FLAGS = FlagValues
+class FlagValues {
 
     private val flags: MutableMap<String, AnyFlag> = hashMapOf()
 
@@ -30,4 +27,17 @@ object FlagValues {
         return flags.containsKey(name)
     }
 
+    fun parseArgv(argv: Array<String>) {
+        argv.map {
+            val key = it.split("=")[0].substring(2)
+            val parts = it.split("=")
+            val value = if (parts.size == 1) null else parts[1]
+            Pair(key, value)
+        }.forEach {
+            getFlagValue(it.first).parse(it.second.orEmpty())
+        }
+    }
 }
+
+@JvmField
+val FLAGS = FlagValues()
