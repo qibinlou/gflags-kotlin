@@ -1,25 +1,36 @@
 package examples;
 
 import gflags.Defines;
-import org.junit.Assert;
+import gflags.FlagValues;
+import gflags.FlagValuesKt;
 import org.junit.Test;
 
-import static gflags.FlagValuesKt.FLAGS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class BasicUsage {
 
     @Test
     public void testBasicUsage() {
-        Defines.DEFINE_string("name", "Leo", "Name of the user");
-        Defines.DEFINE_string("hello", "ssdsd", "Name of the user");
+        FlagValues FLAGS = new FlagValues();
+
+        Defines.DEFINE_string("name", "Leo", "Name of the user", FLAGS);
+        Defines.DEFINE_string("hello", "ssdsd", "Name of the user", FLAGS);
 
 
         String[] args = {"--name=John", "--hello=Doe"};
         FLAGS.parseArgv(args);
 
-        Assert.assertEquals("John", FLAGS.getFlagValue("name").getValue());
-        Assert.assertEquals("Doe", FLAGS.getFlagValue("hello").getValue());
+        assertEquals("John", FLAGS.getFlagValue("name").getValue());
+        assertEquals("Doe", FLAGS.getFlagValue("hello").getValue());
 
+    }
+
+    @Test
+    public void testFlagIsolation() {
+        FlagValues FLAGS = FlagValuesKt.FLAGS;
+        assertFalse(FLAGS.hasFlag("name"));
+        assertFalse(FLAGS.hasFlag("hello"));
     }
 
 }
