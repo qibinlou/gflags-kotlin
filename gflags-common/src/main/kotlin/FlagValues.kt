@@ -19,7 +19,7 @@ class FlagValues {
         flags[flag.name] = flag
     }
 
-    fun getFlagValue(name: String): AnyFlag {
+    fun getFlag(name: String): AnyFlag {
         return flags[name]!!
     }
 
@@ -34,7 +34,7 @@ class FlagValues {
             val value = if (parts.size == 1) null else parts[1]
             Pair(key, value)
         }.forEach {
-            getFlagValue(it.first).parse(it.second.orEmpty())
+            getFlag(it.first).parse(it.second.orEmpty())
         }
     }
 }

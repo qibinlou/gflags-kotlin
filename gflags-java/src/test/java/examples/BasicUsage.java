@@ -21,8 +21,8 @@ public class BasicUsage {
         String[] args = {"--name=John", "--hello=Doe"};
         FLAGS.parseArgv(args);
 
-        assertEquals("John", FLAGS.getFlagValue("name").getValue());
-        assertEquals("Doe", FLAGS.getFlagValue("hello").getValue());
+        assertEquals("John", FLAGS.getFlag("name").getValue());
+        assertEquals("Doe", FLAGS.getFlag("hello").getValue());
 
     }
 
