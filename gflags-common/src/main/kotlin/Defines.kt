@@ -36,6 +36,7 @@ object Defines {
     }
 
     @JvmStatic
+    @JvmOverloads
     fun DEFINE_float(
         name: String,
         default: Float,
@@ -44,9 +45,10 @@ object Defines {
         upperBound: Float? = null,
         flagValues: FlagValues = FLAGS
     ) {
-        TODO()
+        DEFINE(Parsers.FLOAT_PARSER, name, default, help, flagValues)
     }
 
+    @JvmOverloads
     @JvmStatic
     fun DEFINE_integer(
         name: String,
@@ -56,7 +58,7 @@ object Defines {
         upperBound: Int? = null,
         flagValues: FlagValues = FLAGS
     ) {
-        TODO()
+        DEFINE_flag(Flag(name, default, Parsers.INTEGER_PARSER, help = help), flagValues)
     }
 
     fun DEFINE_enum(
