@@ -12,6 +12,7 @@ object Defines {
         flagValues.registerFlag(flag)
     }
 
+    @JvmStatic
     fun <T, P : ArgumentParser<T>> DEFINE(
         parser: P,
         name: String,
@@ -34,6 +35,7 @@ object Defines {
         DEFINE(Parsers.BOOLEAN_PARSER, name, default, help, flagValues)
     }
 
+    @JvmStatic
     fun DEFINE_float(
         name: String,
         default: Float,
@@ -45,6 +47,7 @@ object Defines {
         TODO()
     }
 
+    @JvmStatic
     fun DEFINE_integer(
         name: String,
         default: Int,
@@ -66,6 +69,7 @@ object Defines {
         TODO()
     }
 
+    @JvmStatic
     fun declare_key_flag(flagName: String, flagValues: FlagValues = FLAGS) {
         TODO()
     }

@@ -28,13 +28,27 @@ class FlagValues {
     }
 
     fun parseArgv(argv: Array<String>) {
-        argv.map {
-            val key = it.split("=")[0].substring(2)
-            val parts = it.split("=")
+        argv.filter { it.startsWith("--") }
+            .map { it.substring(2) }
+            .map { it -> parseArgString(it) }
+            .forEach {
+                getFlag(it.first).parse(it.second.orEmpty())
+            }
+    }
+
+    companion object {
+        private fun parseArgString(arg: String): Pair<String, String?> {
+            if (!arg.contains("=")) {
+                if (arg.startsWith("no") && arg.length > 2) {
+                    return Pair(arg.substring(2), "false")
+                } else {
+                    return Pair(arg, "true")
+                }
+            }
+            val key = arg.split("=")[0]
+            val parts = arg.split("=")
             val value = if (parts.size == 1) null else parts[1]
-            Pair(key, value)
-        }.forEach {
-            getFlag(it.first).parse(it.second.orEmpty())
+            return Pair(key, value)
         }
     }
 }
