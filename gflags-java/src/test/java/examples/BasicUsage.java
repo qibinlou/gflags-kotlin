@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BasicUsage {
@@ -77,12 +76,8 @@ public class BasicUsage {
         Defines.DEFINE_integer("workers", 1, "worker thread pool size", null, null, FLAGS);
 
         String[] args = {"--workers=4.0"};
-        try {
-            FLAGS.parseArgv(args);
-            fail("It should fail.");
-        } catch (IllegalFlagValueException e) {
-            assertTrue(e.getMessage().contains("4.0"));
-        }
+        IllegalFlagValueException exception = assertThrows(IllegalFlagValueException.class, () -> FLAGS.parseArgv(args));
+        assertTrue(exception.getMessage().contains("4.0"));
     }
 
     @ParameterizedTest(name = "\"{0}\" should be parsed into integer {0}")
