@@ -59,17 +59,20 @@ object Defines {
         flagValues: FlagValues = FLAGS
     ) {
         val parser = IntegerArgumentParser(lowerBound, upperBound)
-        DEFINE_flag(Flag(name, default, parser, help = help), flagValues)
+        DEFINE_flag(Flag(name, default, parser, help), flagValues)
     }
 
+    @JvmOverloads
+    @JvmStatic
     fun DEFINE_enum(
         name: String,
         default: String,
-        enumValues: Set<String>,
         help: String,
+        enumValues: Set<String>,
         flagValues: FlagValues = FLAGS
     ) {
-        TODO()
+        val parser = EnumArgumentParser(enumValues)
+        DEFINE_flag(Flag(name, default, parser, help), flagValues)
     }
 
     @JvmStatic

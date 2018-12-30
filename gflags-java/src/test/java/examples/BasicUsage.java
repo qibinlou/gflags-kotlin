@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -104,6 +107,36 @@ public class BasicUsage {
         IllegalFlagValueException exception = assertThrows(IllegalFlagValueException.class, () -> FLAGS.parseArgv(args));
         assertTrue(exception.getMessage().contains(arg));
         assertTrue(exception.getMessage().contains("1") || exception.getMessage().contains("8"));
+    }
+
+    @Test
+    public void testEnumFlag_defaultEnumValue() {
+        FlagValues FLAGS = new FlagValues();
+        Defines.DEFINE_enum("color", "RED", "color enum", new HashSet<>(Arrays.asList("RED", "GREEN", "BLUE")), FLAGS);
+        FLAGS.parseArgv(new String[0]);
+        assertEquals("RED", FLAGS.getFlag("color").getValue());
+    }
+
+    @Test
+    public void testEnumFlag_validEnumArg() {
+        FlagValues FLAGS = new FlagValues();
+        Defines.DEFINE_enum("color", "RED", "color enum", new HashSet<>(Arrays.asList("RED", "GREEN", "BLUE")), FLAGS);
+        FLAGS.parseArgv(new String[]{"--color=BLUE"});
+        assertEquals("BLUE", FLAGS.getFlag("color").getValue());
+    }
+
+    @Test
+    public void testEnumFlag_invalidEnumArg() {
+        FlagValues FLAGS = new FlagValues();
+        Defines.DEFINE_enum("color", "RED", "color enum", new HashSet<>(Arrays.asList("RED", "GREEN", "BLUE")), FLAGS);
+        assertThrows(IllegalFlagValueException.class, () -> FLAGS.parseArgv(new String[]{"--color=BLUES"}));
+    }
+
+    @Test
+    public void testEnumFlag_caseSensitiveEnumParser() {
+        FlagValues FLAGS = new FlagValues();
+        Defines.DEFINE_enum("color", "RED", "color enum", new HashSet<>(Arrays.asList("RED", "GREEN", "BLUE")), FLAGS);
+        assertThrows(IllegalFlagValueException.class, () -> FLAGS.parseArgv(new String[]{"--color=green"}));
     }
 
     @Test

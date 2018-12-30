@@ -1,8 +1,9 @@
 package gflags
 
 enum class FlagType {
-    STRING,
     BOOLEAN,
+    ENUM,
+    FLOAT,
     INTEGER,
-    FLOAT
+    STRING
 }
