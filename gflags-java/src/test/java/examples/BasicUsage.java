@@ -4,9 +4,12 @@ import gflags.Defines;
 import gflags.FlagValues;
 import gflags.FlagValuesKt;
 import gflags.exceptions.IllegalFlagValueException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.Assert.*;
+import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BasicUsage {
 
@@ -65,7 +68,7 @@ public class BasicUsage {
     }
 
     @Test
-    public void testIntegerFlag_invalidValue() {
+    public void testIntegerFlag_invalidFloatValue() {
         FlagValues FLAGS = new FlagValues();
 
         Defines.DEFINE_integer("workers", 1, "worker thread pool size", null, null, FLAGS);
@@ -77,7 +80,30 @@ public class BasicUsage {
         } catch (IllegalFlagValueException e) {
             assertTrue(e.getMessage().contains("4.0"));
         }
+    }
 
+    @ParameterizedTest(name = "\"{0}\" should be parsed into integer {0}")
+    @ValueSource(strings = {"1", "2", "7", "8"})
+    public void testIntegerFlag_inBoundaryValue(String arg) {
+        FlagValues FLAGS = new FlagValues();
+        Defines.DEFINE_integer("workers", 1, "worker thread pool size", 1, 8, FLAGS);
+
+        String[] args = {"--workers=" + arg};
+        FLAGS.parseArgv(args);
+
+        assertEquals(Integer.parseInt(arg), FLAGS.getFlag("workers").getValue());
+    }
+
+    @ParameterizedTest(name = "\"{0}\" should cause parsing error")
+    @ValueSource(strings = {"-1", "0", "9", "2147483647"})
+    public void testIntegerFlag_outOfBoundaryValue(String arg) {
+        FlagValues FLAGS = new FlagValues();
+        Defines.DEFINE_integer("workers", 1, "worker thread pool size", 1, 8, FLAGS);
+
+        String[] args = {"--workers=" + arg};
+        IllegalFlagValueException exception = assertThrows(IllegalFlagValueException.class, () -> FLAGS.parseArgv(args));
+        assertTrue(exception.getMessage().contains(arg));
+        assertTrue(exception.getMessage().contains("1") || exception.getMessage().contains("8"));
     }
 
     @Test

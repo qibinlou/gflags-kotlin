@@ -58,7 +58,8 @@ object Defines {
         upperBound: Int? = null,
         flagValues: FlagValues = FLAGS
     ) {
-        DEFINE_flag(Flag(name, default, Parsers.INTEGER_PARSER, help = help), flagValues)
+        val parser = IntegerArgumentParser(lowerBound, upperBound)
+        DEFINE_flag(Flag(name, default, parser, help = help), flagValues)
     }
 
     fun DEFINE_enum(
